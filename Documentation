@@ -1,0 +1,1084 @@
+MULTI-GIGA BIT OPENFLOW SWITCH
+ 
+Final Year Project Report
+Presented by
+UMAR NAEEM MIRZA
+E09-105
+BILAL TAHIR
+E09-022
+IRFAN UL HAQ
+E09-038
+ARSLAN ALI
+E09-010
+In partial fulfillment of
+The requirement for the degree of
+
+Bachelor of Science in Electrical Engineering 
+(Computer) 
+
+Department of Electrical and Computer Engineering
+
+Center for Advanced Studies in Engineering
+Islamabad
+June 2013
+
+
+MULTI-GIGA BIT 
+OPENFLOW SWITCH
+
+An Undergraduate Final Year Project Report submitted to the
+Department of
+Electrical and Computer Engineering
+
+As a partial Fulfillment for the award of the Degree
+Bachelor of Science in Electrical Engineering 
+(Computer) 
+By
+Name                                   Roll Number
+              Umar Mirza                                   E09-105
+              Bilal Tahir                                      E09-022
+              Irfan ul Haq                                   E09-038
+              Arslan Ali                                        E09-010
+
+
+Supervised by
+
+Dr. Zaheer Ahmed
+Director CARE
+Department of Electrical and Computer Engineering
+CASE Islamabad
+
+Center for Advanced Studies in Engineering
+Islamabad
+June 2013
+
+Final Approval
+This Project Titled
+MULTI-GIGA BIT OPENFLOW SWITCH
+
+Submitted for the Degree of
+Bachelor of Science in Electrical Engineering 
+(Computer) 
+By
+Name                                   Roll Number
+              Umar Mirza                                   E09-105
+              Bilal Tahir                                      E09-022
+              Irfan ul Haq                                   E09-038
+              Arslan Ali                                        E09-010
+
+Has been approved for
+
+Center for Advanced Studies in Engineering
+Islamabad
+
+______________________
+Supervisor
+Dr. Zaheer Ahmed
+Director, CARE
+
+______________________                                                                     Co-Supervisor                                                      
+Mr. Nadeem Yousaf                                                           
+Project Manager, CARE                             
+
+
+______________________
+Chairman
+Department of Electrical and Computer Engineering 
+
+
+ABSTRACT
+OpenFlow is a communication protocol that gives access to the forwarding plane of a network switch or router. OpenFlow is added as a feature to commercial Ethernet switches, routers and wireless access points. Today computer networks is the most important and essential part of any organization, home, university. It is very difficult to innovate in computer networks that we use every day because the devices which we use for networking such as Ethernet switches and routers are closed platforms that cannot be modified. Once the switch or router has been configured by the vendor its functionality cannot be changed. So because the researchers cannot easily add new functionality into their network, the rate of innovation is low. For the solution of this problem we have developed a research platform for students and researchers to run their experiments and develop new applications on it without disturbing the real network traffic.
+ 
+ACKNOWLEDGMENTS
+First and foremost we thank ALLAH Almighty who has gifted us enough dedication and strength to let us complete this report. We want to dedicate this to the ultimate teacher and guider of this universe Holy Prophet (P.B.U.H) who is the most important personality in the regard of learning.
+We are highly indebted to our Project Coordinator Mr. Mian Jehanzeb for his kind, valuable and precise guidance in pursuing our project. We would also want to appreciate the absolute support and help form the people of different departments such as Mr. Iftikhar Mehmood from Electrical Department.
+We would like to express our gratitude to all those who helped us during this project. We thank the CARE for giving us this opportunity in the first instance, to do the necessary research work and to use departmental Equipment.
+We are deeply indebted to our supervisor Dr. Zaheer Ahmed, Mr. Nadeem Yousaf, Mr. Asrar Ashraf whose suggestions and encouragement helped us throughout the project.
+We would also like to thank our parents who supported us throughout the project.
+We would also like to appreciate the support from our colleagues in the project work. Furthermore we wish to show our gratitude to all of them for all their help, support, interest and valuable suggestions.
+This report would not have been possible without the unsolicited attention and assistance of all these individuals. We are extremely grateful to all of you for your great support. This has been a great learning experience for us.
+ 
+TABLE OF CONTENTS
+ABSTRACT  iv
+ACKNOWLEDGMENTS	v
+TABLE OF CONTENTS	vi
+LIST OF Tables	ix
+CHAPTER   1 - INTRODUCTION	10
+1.1	MOTIVATION	11
+CHAPTER   2 – Literature Review	11
+2.1	Background Study	11
+2.2	Software-Defined Networking (SDN)	12
+2.3	Need for OpenFlow Switch	13
+CHAPTER   3 - OBJECTIVES	14
+3.1	GOALS	14
+3.2	Implementation Steps	14
+CHAPTER   4 - OPENFLOW SWITCH	15
+4.1	Types of OpenFlow Switches	17
+4.1.1	Dedicated Openflow switches	17
+4.1.2	OpenFlow-Enabled switches	18
+4.2	OpenFlow Switch Architecture	18
+4.2.1	OpenFlow Switch actions	19
+4.3	Implementation of OpenFlow Switch on NetFPGA	20
+4.3.1	NetFPGA 1-G	20
+4.4	Mapping of OpenFlow Switch on NetFPGA 1-G	23
+4.4.1	Software	23
+4.4.2	Hardware	24
+4.5	Module Level Design of OpenFlow Switch	26
+4.6	Implementation of OpenFlow Switch on NetFPGA 10-G	30
+4.6.1	NetFPGA 10-G	30
+4.6.2	Supported Functions and Limitations	32
+4.7	Comparison between NetFPGA 1-G and NetFPGA 10-G	33
+4.8	Overall Structure of NetFPGA 10-G	34
+4.8.1	Modules inside OpenFlow pcore	35
+4.9	Hardware Modules inside OpenFlow pcore	38
+4.10	OPENFLOW CONTROLLER	43
+4.10.1	Working of Controller	44
+4.11	Types of Controller	47
+4.11.1	Selection of Controller	48
+How does NOX work?	49
+Versioning	50
+4.12	OpenFlow Switch Simulator	51
+4.12.1	MININET	51
+4.13	OpenFlow Channel	53
+4.13.1	OPENFLOW PROTOCOL	53
+4.13.2	OpenFlow Protocol Overview	53
+4.14	Connection Setup	55
+4.15	Connection Interruption	55
+4.16	Communication between Switch and Controller	60
+4.17	APPLICATIONS	634.18	Network Setup	68
+CHAPTER   5 - PROJECT DELIVERABLES	72
+5.1	: WORK BREAK DOWN STRUCTURE	72
+CHAPTER   6 - OPENFLOW SWITCH SETUP	73
+6.1	Hardware Requirements	74
+6.2	Software Reference Design	74
+CONCLUSION	78
+References	79
+TITLE OF APPENDIX A	80
+ 
+ LIST OF FIGURES
+
+Fig 1 OPENFLOW SWITCH ARCHITECTURE DIAGRAM	11
+Fig 3.1 FLOW	18
+Fig 3.2: flow arrives at an Open-Flow switch.	21
+Fig 3.4: Detailed diagram of the components of the NetFPGA board	23
+Fig 3.5: OpenFlow switch hardware modules	26
+Fig 3.6: NetFPGA reference pipline module	27
+Fig 3.7: Top Level Module of OpenFlow switch on NetFPGA	28
+Fig 3.8: Header Parser	28
+Fig 3.9: Exact Match	29
+Fig 3.10: Wildcard	30
+Fig 3.11: NetFPGA 10-G	31
+Fig 3.12: Simple structure of OF-NF10G switch and a controller.	32
+Fig 3.13: Top level of OpenFlow implementation	35
+Fig 3.14: Packet switching module	36
+Fig 3.15: Writing to a flow table	38
+Fig 3.16: Reading from a flow table	39
+Fig 3.17: pkt_preprocessor block diagram	40
+Fig 3.18: Flow chart detailing packet flow through an openflow switch.	46
+Fig 3.19: Flow diagram detailing packet flow through an Openflow controller.	47
+Fig 3.20: Comparison b/w Pox, Nox, Nox Classic	52
+Fig 3.21: Reading from a flow table	62
+Fig 3.22: Reading from a flow table	63
+Fig 3.23: Segment tables of Switch	65
+Fig 3.24: result of L2	66
+Fig 3.25: ROUTER FORWARDING	68
+Fig 3.26: Network System	69
+Fig 3.27: Hub	70
+Fig 3.28: L2 Switch	71
+Fig 3.29: Router	72
+Fig 3.30: WBS	73
+
+
+
+
+
+
+ 
+LIST OF TABLES
+Table	page
+Table1	Supported functions and Limitations	32
+Table2	NetFPGA Board comparison	33
+Table3	Comparison of Controllers	47
+Table4	Reqiurements	52
+Table5	Configuring Controller	52
+Table6	Layer 2 MAC	63
+Table7	Layer 2 MAC & IP	64
+Table8	IP Address	65
+Table9	IP & PORT	69
+ 
+
+
+
+
+
+ 
+CHAPTER   1 - INTRODUCTION
+An Openflow network consists of Openflow switches and Openflow controllers with end-hosts. Openflow separates the “datapath” over which packets flow from source to destination, from the “control path” that manages the packets flows and datapath elements. The datapath elements are flow-switches, consisting of a flow-table and communication to the controller using the Openflow Protocol. Flow entries include fields from layer 2, 3 and 4. The controller then decides which flows to enter and the path their packets should follow. Openflow differs in that it only defines the flow-based datapath switches, and the protocol for adding and deleting flow entries. When a packet arrives to a switch and it is not matched in the flow table, it is encapsulated with OFP header and to the controller over SSL channel. When the packet arrives at the controller the controller matches the flow with its table and then decides what to do with the packet and send the packet back to the controller.
+We have implemented Openflow switch on NetFPGA. NetFPGA is a reprogrammable hardware. NetFPGA is a platform that enables researchers and students to experiment with gigabit rate networking hardware. 
+FIG.1 OPENFLOW SWITCH ARCHITECTURE DIAGRAM 
+
+1.1	MOTIVATION
+As we know that networks are the most important part of our daily life. Without networking one cannot survive in the market weather it is an organization, school, home, or anything. For the communication between any parts of the world one needs to send and receive messages fast and correctly. This success has been both a blessing and a curse for networking researchers; their work is more relevant, but their chance of making an impact is more remote. The reduction in real-world impact of any given network innovation is because the enormous installed base of equipment and protocols, and the reluctance to experiment with production traffic, which have created an exceedingly high barrier to entry for new ideas. Today, there is almost no practical way to experiment with new network protocols (e.g., new routing protocols, or alternatives to IP) in sufficiently realistic settings (e.g., at scale carrying real traffic) to gain the confidence needed for their widespread deployment. The result is that most new ideas from the networking research community go untried and untested; hence the commonly held belief that the network infrastructure is not progressing. Having recognized the problem, we are developing a programmable network Openflow switch. So new ideas can be transformed into reality and one can progress in networking.
+CHAPTER   2 – Literature Review
+2.1	Background Study
+Looking back at how networks were implemented 20 years ago and looking at the image of networking today it is obvious that networks have come a long way and evolved tremendously in terms of speed, reliability, security and ubiquity. And while physical layer technologies have evolved providing high-capacity links, network devices have improved in computational power and a vast amount of exciting network applications has emerged, the network in its structure has not seen much change from its early days. In the existing infrastructure, complex tasks that make up the overall  functionality of the network such as routing or network access decisions are delegated to network devices from various different vendors all running different firmware. 
+Moreover the penetration of networking in various crucial sectors of our every-day lives discourages any attempt of experimentation with critical-importance production traffic. This is essentially one of the main reasons why network infrastructure has remained static and inflexible and no major breakthroughs have been achieved towards this direction. 
+ Openflow has emerged from the need to address these critical deficiencies in networking today in order to help research bloom. Openflow exploits the existence of lookup tables in modern Ethernet switches and routers. These flow-tables run at line-rate to implement firewalls, NAT, QoS or to collect statistics, and vary between different vendors. However the Openflow team has identified a common set of functions that are supported by most switches and routers. By identifying this common set of functions, a standard way of manipulating flow-tables can be deployed for all network devices regardless of their vendor-specific implementation. Openflow provides this standard way of manipulating flow-tables, allowing a flow-based network traffic partition. This way, network traffic can be organized into various different flows which can be grouped and isolated in order to be routed, processed or controlled in any way desired. 
+By removing network functionality from devices scattered along the network and centralizing it completely or locally, one can more easily control and therefore change it. The only requirements in order to implement this modification are switches that can support Openflow and a centralized controller process which contains the network logic. This way, the control and data plane are no longer co-located in one single network device, but separated and dynamically linked to one another. This all comes under the umberella of Software Defined Networking (SDN).
+2.2	Software-Defined Networking (SDN)
+The Software-Defined Networking (SDN) is a concept that is to break with the traditional networks where the switch decides the actions to do. The SDN concept is closely related to the following idea: the Network as a Service (NaaS). That is, the service provided consists to the assignment of a certain amount of network resources that can be managed and used by the user, where each of these allocations of network resources, logical or virtual, are defined as Slice. Each Slice works completely independently from the rest (Traffic separation) although all slices share the same physical network infrastructure.
+2.2.1 Traditional Network Architectures
+A network switch is an interconnection device capable of analyzing the headers of the received packets and makes decisions about how to route packets. There are different typesof switches, depending on the layer of the OSI model in which they work.
+Layer 1 (HUB): working in the physical layer and are used as signal repeaters and regenerators.
+Layer 2 (Switch): working on the physical and link layer and are used to interconnect devices that belong to the same network.
+Layer 3 (Router) working in the physical, link and network layer and are used tointerconnect devices that belong to different networks.
+The architecture of the network switches consists of two levels:
+Data Path: Responsible for performing packet switching.
+Path Control: Responsible for making decisions about how they have to route packets.
+A conventional switch, when receiving a packet decides the output and communicates this decision to Data Path for implementing it. Typically, in classical network architecture, the data path and the decision-making process of switching or routing are collocated on the samedevice and it is communicate via an internal bus. In the case of a switch forinstance, each port is configured to send and receive packets, and perform tasks that weredetermined by the ”brain” of the device, which is where higher-level decisions are made.
+The Software-Defined Networking consists to break with conventional architecture of the switches. Thus, OpenFlow defines a standard upon which these two concepts can be abstracted. This means that these two functions no longer have to occur on the same device. This is that the control logic is moved to an external controller (typically a external PC) and the controller talks to the Data Path, over the network itself, using the OpenFlow protocol.Since he control plane has been separated from the data path, it becomes possible fornetwork researchers to develop their own algorithms to control data flows and packets.OpenFlow provides amongst other things. There are the following:
+•	More speed, scale, fidelity of vendor hardware.
+•	More flexibility and control of software and simulation.
+•	Vendors don’t need to expose implementation.
+
+2.3	 Need for OpenFlow Switch
+The need for Openflow switch is to virtualize the network and give the control part to the user so that he can implement his experiments and new ideas should emerged in the field of networking. Here is where it appears the term programmable networks and where OpenFlow technology can help to solve this problem. 
+CHAPTER   3- OBJECTIVES
+The main objective of our final year project was to develop a platform for students to build their own applications and protocols in the field of networking, so a new era will begin in the field of the networking. By enabling our students and researchers to run their experiments on Openflow switch will bring tremendous amount of development in networking and exploring new things will help students to carry out their higher studies with this project. Openflow switch is a latest technology; everyone in the world is trying to develop such a platform to increase the research and development ratio in networking.
+
+3.1	GOALS
+The goals for the completion of this project are listed below:
+	Hardware for 1G Openflow.
+	Controller for 1G OpenFlow.
+	Hardware for 10G Openflow.
+	Controller for 10G OpenFlow.
+3.2	Implementation Steps
+Implementations steps that are to be carried out are as following:
+1. Study and design of OpenFlow switch.
+2. Study of different controllers used for communication with the switch.
+3. Implementing Openflow switch on NetFPGA 1-G
+4. Developing layer 2 and layer 3 applications.
+5. Communication between controller and switch.
+6. Implementing Openflow switch on NetFPGA 10-G.
+7. Synchronizing Openflow switch with classic routers and switches. 
+CHAPTER   4 - OPENFLOW SWITCH
+An OpenFlow switch is a software program or hardware device that forwards packets in a software-defined networking (SDN) environment. 
+In a conventional switch, packet forwarding (the data plane) and high-level routing (the control plane) occur on the same device. In Openflow switch, the data plane is decoupled from the control plane. The data plane is still implemented in the switch itself but the control plane is implemented in software and a separate controller makes high-level routing decisions. The switch and controller communicate by means of the OpenFlow protocol.
+The datapath of an OpenFlow Switch consists of a Flow Table, and an action associated with each flow entry. The set of actions supported by an OpenFlow Switch is extensible, but below we describe a minimum requirement for all switches. The ability to specify arbitrary handlingof each packet and seeking a more limited, but still useful, range of actions.
+ An OpenFlow Switch consists of three parts: 
+(1) A Flow Table, with an action associated with each flow entry, to tell the switch how to process the flow.
+(2) A Secure Channel that connects the switch to a remote control process (called the controller), allowing commands and packets to be sent between a controller and the switch using.
+(3) The OpenFlow Protocol, which provides an open and standard way for a controller to communicate with a switch. By specifying a standard interface (the OpenFlow Protocol) through which entries in the Flow Table can be defined externally, the OpenFlow Switch avoids the need for researchers to program the switch. It is useful to categorize switches into dedicated OpenFlow switches that do not support normal Layer 2 and Layer 3 processing, and OpenFlow-enabled general purpose commercial Ethernet switches and routers, to which the OpenFlow Protocol and interfaces have been added as a new feature.
+The OpenFlow Switch can have one or multiple flow tables and different group table, which performs packet lookup and forwarding. Each flow table contains a set of flow entries to apply to matching packets or action associated with each flow entry. The collection of flow entries on a network device is called the “flow table”. An entry in the Flow-Table has three fields:
+•	A rule that defines the flow.
+•	Statistics in which counters are used to update for matching packet: Counters are maintained per-table, per-flow, per-port and per queue. Duration refers to the time the flow has been installed in the switch.
+•	Actions to apply to matching packets: Each flow entry is associated with zero or more actions that dictate how the switch handles matching packets. Action lists for inserted flow entries must be processed in the order specified and a switch is not required to support all action types. When the connection is made between the controller and the switch, this latter device indicates to the Controller the optional actions that implements. If there is not forwarding actions, the switch will decide according to their own configuration what to do with these specific packages. In this case, the switch can forward packets to the Controller, can remove the packages or finally can continue to the next flow table. In contrast, if a matching entry is found, the Switch will execute the instructions associated with this specific flow entry. The set of actions supported by an OpenFlow Switch is extensible, but the minimum requirement for all switches is that the data path must have flexibility to provide high performance and low cost. 
+
+ 
+FIG 3.1 FLOW
+There is the possibility to classify the OpenFlow Switches into two types: Dedicated OpenFlow Switches and OpenFlow-Enabled Switches. The Dedicated OpenFlow Switches do not support normal Layer 2 and Layer 3 processing and in the OpenFlow Enabled Switches, have been added as a new feature theOpenFlow Protocol and interfaces.
+4.1	 Types of OpenFlow Switches
+There are two types of Openflow switch as described below:
+4.1.1	Dedicated Openflow switches
+A dedicated OpenFlow Switch is a dumb data Path element that forwards packets between ports, as defined by a remote control process. In this context, flows are broadly defined, and are limited only by the capabilities of the particular implementation of the Flow Table. For experiments involving non-IPv4 packets, a flow could be defined as all packets matching a specific (but non-standard) header. Each flow-entry has a simple action associated with it; the three basic ones (that all dedicated OpenFlow switches must support) are:
+1. Forward this flow’s packets to a given port (or ports). This allows packets to be routed through the network.
+2. Encapsulate and forward this flow’s packets to a controller. Packet is delivered to Secure Channel, where it is encapsulated and sent to a controller. Typically used for the first packet in a new flow, so a controller can decide if the flow should be added to the Flow Table. Or in some experiments, it could be used to forward all packets to a controller for processing.
+3. Drop this flow’s packets: Can be used for security, to curb denial of service attacks, or to reduce spurious broadcast discovery traffic from end-hosts.
+4.1.2	OpenFlow-Enabled switches
+Some commercial switches, routers and access points will be enhanced with the OpenFlow feature by adding the Flow Table, Secure Channel and OpenFlow Protocol. Typically, the Flow Table will re-use existing hardware, such as a TCAM; the Secure Channel and Protocol will be ported to run on the switch’s operating system. Finally, the interconnection between the Controller and the OpenFlow Switch is through the Secure Channel. Through the Secure Channel, the Controller exchanges messages with other devices, normally Switches, with the aim of configure and maintain the Switch, receive events from the switch and finally send packets out the switch. OpenFlow provides a protocol to perform the communication between the Controller and the OpenFlow Switch. All messages exchanged by the Controller and the Switch must follow the format indicated by the OpenFlow protocol.
+4.2	  OpenFlow Switch Architecture
+The architecture of our OpenFlow is simple. It pushes complexity to controller software so that the controller administrator has full control over it. This is done by pushing forwarding decisions to a “logically” centralized controller, and allowing the controller to add and remove forwarding entries in OpenFlow switches. This places all complexity in one place where it can be managed, transferring the cost from every switch in the network to a single location.
+Centralizing complexity allows the network administrator to keep close watch over the behavior of the network. Since she has tight and direct control over forwarding in theswitches, she can manage network resources and separate production traffic from experimental traffic.
+The central controller can be programmed to behave as a multiplexer that splits traffic belonging to different network users onto different user-controlled OpenFlow controllers, all under the network administrator’s control. This form of network virtualization allows researchers to run their own protocols on the physical network while leaving control in the hands of the network administrator.
+The basic OpenFlow switch version “type”, the OpenFlowType-0 switch, classifies packets into flows based on a 10-tuple which can be matched exactly or using wildcards for fields. The following fields constitute the 10-tuple:
+- Switch input port
+- Source MAC address
+- Destination MAC address
+- Ethernet Type
+- VLAN ID
+- IP source address
+- IP destination address
+- IP protocol
+- TCP/UDP source port
+- TCP/UDP destination port
+Flow table entries are matched using this 10-tuple to find the corresponding actions associated with the flow. The OpenFlow Type-0 switch has three required actions:
+4.2.1	OpenFlow Switch actions
+•	Forward to a specified set of output ports: This is used to move the packet across the network.
+•	Encapsulate and send to the controller: The packet is sent via the secure channel to the remote OpenFlow controller. This is typically used for the first packet of a flow to establish a path in the network.
+•	Drop: Can be used for security, to curb denial of service attacks, or to reduce spurious broadcast discovery traffic from end-hosts.
+The protocol also specifies other optional per-packet modifications such as VLAN modification, IP address rewriting, and TCP/UDP port rewriting. Future revisions of the protocol describing more advanced “types” of OpenFlow switches will provide more general matching and actions. If a match is not found for an arriving packet, the packet is sent to the controller which decides on the action(s) that should be associated with all packets from the same flow. The decision is then sent to the switch and cached as an entry in the switch’s flow table. The next arriving packet that belongs to the same flow is then forwarded at line-rate through the switch without consulting the controller.
+Figure 3.2 shows the steps for routing a flow between two hosts across two switches. In the diagram on the left, the switch flow tables are empty. When a new packet arrives in step 1, it is forwarded to the controller in step 2. The controller examines the packet and inserts entries into the flow tables of the switches on the flow’s path in step 3. The packet is then sent through to the receiving host in steps 4 and 5. In steps 6, 7, and 8 any new packets belonging to the same flow are routed directly since they would match the new entry in the flow tables.
+ 
+Fig3.2: flow arrives at an Open-Flow switch.
+4.3	 Implementation of OpenFlow Switch on NetFPGA
+We have implemented Openflow switch on NetFPGA. NetFPGA is a platform which gives a real networking environment.
+4.3.1	NetFPGA 1-G
+The NetFPGA is the low-cost reconfigurable hardware platform optimized for high-speed networking. The NetFPGA includes the all the logic resources, memory, and Gigabit Ethernet interfaces necessary to build a complete switch, router, and/or security device. Because the entire datapath is implemented in hardware, the system can support back-to-back packets at full Gigabit line rates and has a processing latency measured in only a few clock cycles.
+The NetFPGA platform consists of three parts: hardware, gateware, and software. The hardware is a PCI card. NetFPGA 1-G card is shown in figure 3.3 below:
+ 
+Fig 3.3 : NetFPGA 1-G
+
+Hardware:
+Hardware is consists of the following components:
+1. Field Programmable Gate Array (FPGA) Logic
+2. Gigabit Ethernet networking ports
+3. Static Random Access Memory (SRAM)
+4. Double-Date Rate Random Access Memory (DDR2 DRAM)
+5. Multi-gigabit I/O
+6. Standard PCI Form Factor
+Gateware:
+There are two reference designs distributed with the official NetFPGA release that run on the NetFPGA: an IPv4 router, and a 4-port NIC. All reference designs are based on a generic reference pipeline shown in Figure 3. The reference pipeline captures the main stages of packet processing in a network switch. The Rx Queues pull packets from the I/O ports, the Input Arbiter selects which Rx Queue to service, the Output Port Lookup decides which output queue to store a packet in, the Output Queues module stores packets until the output port is ready and the TX Queues send packets out on the I/O ports. The main switching decision usually happens in the Output Port Lookup stage and it differentiates an IPv4 router from a NIC or an Ethernet switch. We have also implemented a learning Ethernet switch which we will use for comparison in this paper.
+
+Software: 
+The software includes the NetFPGA device drivers, utilities, and two router controller packages that can populate the IPv4 Router’s hardware forwarding table. The first is a stand-alone routing software package based on PW-OSPF that runs entirely in user space. The second is a daemon that mirrors Linux’s routing tables from memory into the hardware. This allows using standard open-source routing tools to easily build a full line-rate 4Gbps router using hardware acceleration.
+
+The detailed block diagram of NetFPGA is show in figure 3.4 below:
+ 
+FIG 3.4: Detailed diagram of the components of the NetFPGA board
+
+4.4	 Mapping of OpenFlow Switch on NetFPGA 1-G
+Now we will describe the implementation of Openflow switch on NetFPGA. We have used NetFPGA reference router design to build our Openflow switch. We have divided our implementation into two parts:
+
+1. Software
+2. Hardware
+4.4.1	Software
+The OpenFlow switch management software extends the OpenFlow reference software implementation. The reference software canbe divided into two sections: 
+1. User-space 
+2. kernel-space.
+User-Space
+The user-space process communicates with the OpenFlow controller using SSL to encrypt the communication. The OpenFlow protocol specifies the format for messages between the switch and controller. Messages from the switch to the controller such as arrival of new flows or link state updates and messages from the controller to the switch such as requests to add or delete flow table entries are exchanged between this user-space process and the kernel module via IOCTL system calls.
+Kernel-Space
+The kernel module is responsible for maintaining the flow tables, processing packets, and updating statistics. By default the reference OpenFlow switch kernel module creates these tables only in software, matching packets received via NICs on the host PC. The tables are linked together as a chain, and each packet is tested for a match sequentially in each table in the chain. Priority is given to the first table that matches in the chain. The wildcard lookup table in the software is implemented using a linear search table, while the exact lookup table is a hash table using two-way hashing.
+The OpenFlow kernel module enables extensibility by allowing a secondary hardware-specific module to register additional tables with it. The additional flow tables take priority over the primary module’s tables for all flow requests (including statistics reporting). We have extended the reference system by adding a NetFPGA OpenFlow kernel module. This module takes advantage of the OpenFlow kernel module interface and links the hardware tables with the primary OpenFlow module.
+Packets arriving at the NetFPGA that match an existing entry are forwarded in hardware at line-rate. Packets that do not match an existing flow in hardware, i.e. new flows, are sent up to the OpenFlow kernel module which will then handle the packet, potentially forwarding it on to the controller.
+In the event that the NetFPGA hardware flow tables are full, the kernel module will refuse to insert the entry into its flow table. This causes the entry to be inserted into the primary OpenFlow module’s software flow tables. Future packets from such flows will not match in hardware, and will be passed up to software for processing.
+
+4.4.2	Hardware
+The OpenFlow implementation on the NetFPGA is shown in Figure 3.5. It uses the reference pipeline shown in Figure 3.6. Whereas, in the IPv4 router, the Output Port Lookup stage executes the longest prefix match (LPM) and ARP lookups, the OpenFlow Output Port Lookup stage does matching using the 10-tuple described above. The OpenFlow Lookup stage implements the flow table using a combination of on-chip TCAMs and off-chip SRAM to support a large number of flow entries and allow matching on wildcards.
+As a packet enters the stage, the Header Parser pulls the relevant fields from the packet and concatenates them. This forms the flow header which is then passed to the Wildcard Lookup and Exact Lookup modules. The Exact Lookup module uses two hashing functions on the flow header to index into the SRAM and reduce collisions. In parallel with the Exact Lookup, the Wildcard Lookup module performs the lookup in the TCAMs to check for any matches on flow entries with wildcards. The TCAMs are implemented as 8 parallel 32-entry 32-bit TCAMs using Xilinx SRL16e primitives. The Exact Lookup is a state machine that is tightly synchronized with the SRAM controller. The internal pipeline runs at 125MHz with a 64-bit bus width, which means that it can handle 8 Gbps. Since minimum size packet is 8 words, then in the worst case we can expect a new packet every 16 cycles, and we need to perform one lookup every 16 cycles to maintain line-rate. The implemented state machine has 32 cycles, interleaving lookups from two packets. In the first 8 cycles, the state machine reads the flow headers stored in the two locations indicated by the two hashes for the first packet. While waiting for the results of the lookups for the first packet, the state machine issues read requests for the flow headers using the second packet’s two hashes. In the meantime, the results from the first packet’s read requests are checked for a match. In the case of a hit, the data from the hit address is read. The same is then done for the second packet.
+The results of both wildcard and exact-match lookups are sent to an arbiter that decides which result to choose. Once a decision is reached on the actions to take on a packet, the counters for that flow entry are updated and the actions are specified in new headers prepended at the beginning of the packet by the Packet Editor.
+The design allows more stages—OpenFlow Action stages—to be added between the Output Port Lookup and the Output Queues. These stages can handle optional packet modifications as specified by the actions in the newly appended headers. It is possible to have multiple Action stages in series each doing one of the actions from the flow entry. This allows adding more actions very easily as the specification matures—the current implementation does not support any packet modifications.
+
+
+ 
+FIG 3.5: OpenFlow switch hardware modules
+ 
+FIG 3.6: NetFPGA reference pipline module
+4.5	 Module Level Design of OpenFlow Switch
+For a later comparison, Fig3.7 shows the top diagram of OpenFlow design on NetFPGA-1G. Not like NetFPGA-10G (mentioned in a later section), NetFPGA-1G implementation has eight ports (four MAC ports and four corresponding host ports) and only one data path pipeline for data from all the eight ports.
+ 
+Fig 3.7: Top Level Module of OpenFlow switch on NetFPGA
+
+There are 6 different modules for the making of Openflow switch. The working of these modules is described below in detail. We have made these modules by using the reference design of NetFPGA reference NIC.
+1. INPUT ARBITER:
+The Input Arbiter module multiplexes the eight input FIFOS to the internal bus. Initially, the referee implements a round-robin (RR) algorithm, which copies one packet from each queue at a time.
+Although simple and practical, this approach has some performance problems when some port receives small length packets, or has different receiving speeds, these ports will experience higher delay and will even drop packets if they become full. This happens because the copy of a big package from another queue is equivalent to copy not just one, but various packages from these ones, so, if you keep copying one packet from each FIFO at a time, the queues throughput will be unbalanced.
+Input Arbiter uses ROUND ROBIN technique in which its take packets from the queues one by one. If a queue is empty it goes to the next queue.
+In our Openflow switch it take packet from the queues and send them to header parser and one copy of that packet to packet editor which goes through delay FIFO.
+2. HEADER PARSER
+The input of header parser comes from the input arbiter which only forwards the packet one by one. When a packet comes to header parser it parser the header field of the packet and concatenates them and forms a flow. It only gets ten-tupal from the packet as described above and forwards the flow to next modules.
+
+ 
+Fig 3.8: Header Parser
+
+STATE MACHINE:
+
+ 
+
+3. EXACT MATCH
+The work of Exact Match module is to match the flows into the memory using two hashing tables which index the memory for reducing the collisions and error removing. It saves it flows into the SRAM because it needs more memory to save the flows. 
+When a packet arrives it goes through FIFO for synchronization and then Two-way hashing is performed and then the flows are checked into the SRAM using indexes generated by hashing and if the flow matches it gives the hit signal to match arbiter and forwards the result to Match Arbiter.
+ 
+Fig 3.9: Exact Match
+4. WILDCARD
+Wildcard is also a very important module for the searching process. It uses TCAMS to store the flows and when a flow arrive its wildcard its fields in check in the TCAM if there is a match it gives the hit signal to Match Arbiter.
+
+ 
+Fig 3.10: Wildcard
+
+5. MATCH ARBITER
+Match Arbiter gets the results from both Exact Match and Wildcard and selects the winner between them and forwards the packet to the Packet Editor. Most of the time Match Arbiter chooses Exact Match over Wildcard.
+STATE MACHINE
+ 
+6. PACKET EDITOR
+When a decision is reached on the actions to take on a packet, the counters for that flow entry are updated and the actions are specified in new headers prepended at the beginning of the packet by the Packet Editor.
+4.6	  Implementation of OpenFlow Switch on NetFPGA 10-G
+Now we explain you the implementation of Openflow switch on NetFPGA 10-G.
+4.6.1	NetFPGA 10-G
+NetFPGA 10-G provides the 10-G interfaces for high speed packet processing. By using the design of 1-G Openflow switch we had mapped it to 10-G Openflow switch. This describe the OpenFlow switch on NetFPGA-10G platform (OF-NF10G). It consists of a hardware portion of an OpenFlow switch implementation and its associated software. 
+Main Components & Placement 
+Figure illustrate location and quantity of main components used on the HTG-V5TX-PCIE board. 
+ 
+
+Fig 3.11: NetFPGA 10-G
+
+
+
+HARDWARE: 
+The main role of the hardware portion is to modify packet header fields and to forward it from one port to another/other port(s) at a line rate, with referring to flow tables residing in hardware. The hardware portion just receives the packet and forward packet to the application layer. It forwards the packet on the 10-G rate.
+SOFTWARE: 
+The software portion, which is briefly discussed but is out of scope of this document, is in charge of exchanging OpenFlow Protocol messages with a controller, aggregating and reporting various statistics, as well as interfacing with hardware for setting up flow entries and handling packet_in, packet_out and unsupported packets by hardware.
+ 
+Fig 3.12: Simple structure of OF-NF10G switch and a controller.
+4.6.2	Supported Functions and Limitations
+The current implementation has limited functionalities. The current status and future plans are shown in Table 1.
+Table 1: supported functions and limitations
+ 
+Fig6 limitations
+The current version/status is phase1, and it supports:
+
+OpenFlow1.0
+●	w/ hardware assisted forwarding action
+●	Supported action: All the header rewrite actions and outport, except OFPAT_ENQUEUE.
+●	32 wildcard entries --- 8 entries among them are reserved for hardware-to/from-CPU packet transfers, and practically, 24 wildcard entries are available for users.
+●	1024 exact match entry points
+●	Hardware forwarding is theoretically line rate but not confirmed yet
+●	DMA transfer for packet_in and packet_out is potentially slow (clocking of DMA module is 125MHz instead of 250MHz)
+Both exact match entries and wildcard match entries are stored inside BRAMs.
+
+The later designs will/may support:
+OpenFlow1.0
+●	Line rate confirmation
+●	Increasing number of entries (external SRAM for exact match)
+●	Supporting queuing function (w/ output queues on external DRAM)
+OpenFlow1.X
+4.7	 Comparison between NetFPGA 1-G and NetFPGA 10-G
+
+Table2: NetFPGA board comparison
+Board	NetFPGA 1G	NetFPGA 10G
+Network Interface	4 x 1Gbps Ethernet ports	4 x 10Gbps SFP+
+Host Interface	PCI	PCI Express x8
+FPGA	VirtexII-Pro50	Virtex5 TX240T
+Logic Cells	53,136	239,616
+Block RAMs	4176kbits	11664kbits
+External Memories
+(SRAM)	4.5MB ZBT SRAM
+(72bitwidth, 36x2)	27MB QDRII SRAM
+(108bitwidth, 36x3)
+External Memories
+(DRAM)	64MB DDR2 SDRAM
+(36bitwidth, 36x1)	288MB RLDRAM-II
+(144bitwidth, 72x2)
+
+4.8	 Overall Structure of NetFPGA 10-G
+Top level block diagram
+ Fig 3.13 depicts the top level of OpenFlow implementation (hardware), and Fig 3.14 shows how packets are switched to specified output port(s). The port-switching is done by using generic modules of input_arbiter, output_queues and AXI converters. Generic blocks out of OpenFlow pcore are abstracted and are out of scope of this document.
+
+ 
+Fig 3.13: Top level of OpenFlow implementation
+
+ 
+Fig 3.14: Packet switching module
+4.8.1	Modules inside OpenFlow pcore
+OpenFlow pcore consists of: pkt_preprocessor, host_inf, flow_table_ctlr and action_processor. Followings are summaries of those modules:
+Pkt_preprocessor
+ Pkt_preprocessor is the first module in OpenFlow pcore for incoming packets. It parses headers of incoming packets and organizes the parsed fields so that it has as same bit order as 'match' field of a flow table entry bitmap, which is written by a host. Then pkt_preprocessor sends the bitmap to flow_table_ctrl with a handshake. It forwards the packets themselves directly to action_processor with another handshake.
+Host_inf
+Host_inf serves as an interface between a host and other modules inside OpenFlow pcore. In OpenFlow pcore, only host_inf module has AXI lite interface and all the necessary information is read/written via this module. All the data in other modules which are to be read or written are wired to/from host_inf, and they can be accessed as registers in host_inf.
+ Flow table entries, whose actual destination is flow_table_ctlr, are also written and temporarily stored here. A host can access to a register window in this module with multiple register accesses. Once they are done, it sends a bitmap (same format as a bitmap which pkt_preprocessor organizes) to flow_table_ctlr with a handshake. Flow entry statistics can also be read via this module.
+Flow_table_ctlr
+Flow_table_ctlr checks if a queried flow entry bitmap (header information) from pkt_preprocessor matches any entries in its flow tables. If matched, it outputs corresponding 'actions' to queried port’s action_processor. If not, it will send 'actions' with 'send_to_nowhere' information in it, so that action_prcoessor can modify the TUSER of the packet accordingly and eventually bram_output_queues can throw away the corresponding packet. Flow table entry information is filled by a host via host_inf. Flow_table_ctlr owns two flow tables; an exact match table and a wild card match table. In this version, both of them reside in FPGA, which has 1024 entry points and 32 entry points respectively. Future versions may use external memories such as SRAMs for tables.
+Action_processor
+Action_processor rewrites forwarding port information in AXIS TUSER and rewrites packet header depending on ‘action’ list which is received from flow_table_ctlr.
+Action_processor has interfaces to two preceding modules. The one is pkt_preprocessor, and action_processor receives packets from it, and the other is flow_table_ctrlr, and action_processor receives action list for the corresponding packet from it.
+ Action_processor is idle until it gets an action list, and once it has received the list, depending on the contents, it modifies the header of the corresponding packet and it also modifies ‘dst_port’ information in TUSER to the value of the port(s) to be forwarded. If the action is ‘drop packet’ then action_processor will clear (zero out) the ‘dst_port’ field in TUSER. Then finally it sends the packet out of OpenFlow pcore. The packet will be switched to the appropriate port(s) by the combination of input_arbiter module and output_queues module as Fig9 shows. If ‘dst_port’ is zero (drop packet), output_queues won’t transfer the packet to anywhere, hence the packet is dropped.
+Interfaces
+Interface between OpenFlow pcore and others consists of five sets of AXI Stream slave/master interfaces for packet forwarding and an AXI Lite interface for host’s register interface. Each of AXI Stream interfaces has 64-bit data width and 128-bit TUSER.  All the peripherals share the same clocks (axi_clk for AXI Stream and control_clk for AXI Lite) and a reset (peripheral_aresetn), where axi_clk is 160MHz and control_clk is 100MHz.
+ Infrastructure modules also use other clocks; PCIe and DMA modules use 250MHz (currently reduced to 125MHz) PCI clk and 10G MACs use 156MHz clock for communicating with outside signals.
+ 
+
+Fig3.15: Writing to a flow table
+
+ 
+Fig 3.16: Reading from a flow table
+4.9	 Hardware Modules inside OpenFlow pcore
+This section describes the details of each module inside OpenFlow pcore.
+Pkt_preprocessor
+This module parses packet headers and organizes them as a form of flow_entry bitmap, as a ‘flow’ is defined by its header. This module consists of packet buffers (input_fifo, output_pkt_buf), header parser module (header_parser) and lookup entry composer module (lu_entry_composer).
+
+
+
+
+ Block diagram
+ 
+Fig 3.17: pkt_preprocessor block diagram
+An incoming packet as AXI Stream firstly goes to input_fifo; a set of buffers for data/t user. The buffered packet then goes to both header_parser and output_pkt_buf.
+ In the current version supporting OpenFlow1.0, the output from header_parser can be either:
+●	Ethernet w/wo VLAN tag(s) : It only parses the outermost tag
+●	IP
+○	ICMP
+○	TCP/UDP
+○	other
+●	ARP
+●	Other
+Once the parsing has been finished, lu_entry_composer organizes the result from header_parser and creates a flow_entry bitmap. Then it generates a ‘request’ with the bitmap to the following module (flow_table_ctlr). It waits for acknowledgement from flow_table_ctrl and once acknowledge is received, it clears out a ‘request’ and the bitmap.
+Output_pkt_buf is used as a delay generator while it is waiting for a request signal to be generated. The expectation of this submodule is that the following module (action_processor) starts reading data from output_pkt_buf until the end of the packet (TLAST).
+host_inf
+Host_inf is an interface point for a host to access to modules inside OpenFlow pcore. It is used for writing flow_entry, reading flow_entry statistics and accessing to other registers in OpenFlow pcore.
+Host_inf buffers all the necessary information for one entry when a host writes to the‘flow_table window’ in host_inf (see section 4) word by word. Once a host gives a trigger to host_inf, host_inf flushes the information (flow_entry) to flow_table_ctlr with the same handshake protocol as all other pkt_preprocessors and flow_table_ctlr.
+Flow_table_ctlr
+Flow_table_ctlr interfaces flow tables and all the requesters. It has a single pipeline for each exact match and wildcard match table and all the ports timeshare the pipeline.
+When a port (pkt_preprocessor) queries if there is a matching field, it consults both exact match table and a wildcard match table. If it found a matching entry, it grabs a corresponding action from memory and sends it to the same port’s action_processor and updates a statistics.
+If it matches both exact match table and wildcard match table, then it uses the action for exact match table.
+Registers
+In this module, a flow matching and an entry registration from a host are processed in a pipeline. The pipeline has eight stages and each stage consumes one clock cycle.
+ An exact match table and a wildcard match table are searched in parallel.
+ The current implementation uses
+●	Xilinx XAPP IP core TCAM for wildcard entry storage
+●	BRAM for exact match entry and action storage (phase1 implementation), wildcard action storage, and both statistics storage.
+For collecting statistics, BRAM will be used even though exact match table is moved out to SRAM, since it has to be accessed frequently (read, update and write, periodical read from host), and the data is relatively small (64bit / entry).
+ It consists of 7 stages for one query after the request is accepted. So the result (action) will be sent in 7 clocks after the selection.
+Refer to Fig3.17 for block name in the following descriptions
+ (1) 1st and 2nd stage
+ The port to be processed is selected on these two stages. Port_sel block receives table_lookup requests from 4 physical ports and a CPU DMA port. Then it selects which port it should process on this clock, and it passes the selected information (flow_entry) to the next stage. The selection is made in a round robin way, and the most prioritized port will be shifted and changed clock by clock. Once one port is selected, it sends back 'ack' signal to the selected requester (port) at the next clock.
+ The request includes access from host for entry writing and statistics reading/writing (initializing). The access is treated in a same way as other ports.
+(2) 3rd stage
+ Exact match table block and wildcard match table block start processing the information of the previous stage.  Exact_table_hash block generates two addresses from the given entry. It uses CRC-32 to create it. Software will use the same mechanism to choose the address for writing info.
+Wildcard_cam is an XILINX IP core with 32 rows and 256bit width (32bit width x 8pcs are used for enhancing the speed to get a result). Unencoded format address will be used since we use multiple TCAMs and the entry which matches on all the TCAMs is needed. As mentioned, it decodes unencoded_address results from all the TCAMs and chooses one entry address. If it still hits multiple portions, the lowest row will be chosen.
+ Host block passes along address and all the data to the next stage. Nothing will be done on this stage for a host.
+
+
+(3) 4th and 5th stage
+On these stages, exact match block finds entries and actions for both two hashed addresses, and wildcard match block decodes its result and passes it to the next stage.
+ For exact_entries and exact_actions, the phase1 implementation introduces a dual-port BRAM (1K entries) to get two information at one time. If this stage is for host access, one of the dual-port ports is used to read/write entries. SRAM will be used in the future design and it may require some additional glue logics. 
+ For wildcard process, the information from multiple TCAMs (see (2))  is collected and decoded for the next stage.
+(4) 6th stage
+In this stage, the results from exact match table (2 results) and wildcard table (1 result) are ready to be checked. If a matching entry is available, one of them is chosen to the next stage. If there’s no matching entry, it sends ‘nothing matched’ information to the next stage.
+Comparator checks the results. If both exact_match and wildcard_match have matching entries, exact entry is always chosen. Among the two entries of exact match, only one address should be matched maximum. ONLY IF both entries are matched, either one (portA) is used with incrementing an error counter (since it shouldn’t happen).
+For exact match, according to the decision between the two entries, it will choose which address to be used for status update. If this stage is for host access, host address will be chosen.
+Same for wildcard match. The address will be passed to the next stage for status update, but if this stage is for host access, host address will be passed through.
+In this stage the counters are updated. It has five counters that are: exact hit, exact miss, wildcard hit, wildcard miss and exact_error (meaning two exact entries are somehow matched).
+Wildcard_action uses dual-port BRAM to get two information at one time. Depth is also 32 addresses. If this stage is for host access, one of the dual-port ports (portA) is used to read/write entries.
+(5) 7th stage
+On this stage it finally sends out a result to the requesting module. It also reads current status info from (still) both exact and wildcard tables. It may be a host access. In action_sel block, one action among two exact match candidates and a wildcard match candidate is selected and it is sent out to the requested module, along with Done signal. In this stage the statistics counter is also updated.
+The current statistics data will be read for hit entry. Even if the particular match (either exact match or wildcard match) has not been selected and the data is not been used, statistics for both match table will be read anyway. In case of a host access for particular match address (either exact match or wildcard match), the information will be read regardless it is host read access or host write access.
+(6) 8th stage
+In this stage, if the entry hits either exact or wildcard match table, the particular table’s statistics will be updated. If it is a host writes access, the specified data will be written to the specified row of the specified table.
+The updated information includes:
+ - Packet count
+ - Byte count
+ - Current timer value
+All the process is finished at this stage.
+4.10	OPENFLOW CONTROLLER
+The controller is the main device, it is responsible for maintains all of the network rules and distributes the appropriate instructions for the network devices. In others words, the OpenFlow controller is responsible for determining how to handle packets without valid flow entries, and it manages the switch flow table by adding and removing flow entries over the secure channel using the OpenFlow protocol. The controller essentially centralizes the network intelligence, while the network maintains a distributed forwarding plane through OpenFlow Switches and routers. For this reason the controller provides an interface for manage, controlling and administrate the Switch flow-tables. Typically, the Controller runs on anetwork-attached server and there are different control configurations depending on:
+Location
+According to how the delegation of switch management to controllers is performed. One can distinguish two types of settings regarding the location of the controller. One of them would be a Centralized configuration where a single controller manages and configures all devices and another configuration possible would be the distributed configuration, where is available one controller for each set of switches.
+Flow
+Flow Routing: Every flow is individually set up by controller. Exact-match flow entries.  Flow table contains one entry per flow. Good for, for example, campus networks.  Aggregated: One flow entry covers large groups of flows. Wildcard flow entries. Flow table contains one entry per category of flows. Good for large number of flows, e.g. Backbone.
+Behavior
+Reactive: First packet of flow triggers controller to insert flow entries. Efficient use of flow tables. Every flow incurs small additional flow setup time. If control connection lost, switch has limited utility.
+Proactive: Controller pre-populates flow table in switch. Zero additional flow setup time. Loss of control connection does not disrupt traffic. Depending on the configuration, controllers are more sophisticated than others. It’s possible to configure a simple controller that dynamically add/remove flows and where the researcher can control the complete network of OpenFlow Switches and is responsible to decide how all flows are processed. Also can be imagined a sophisticated controller which can support multiple researchers, each with different accounts and permissions, enabling them to run multiple independent experiments on different sets of flows. This flows can be identified as under the control of a particular researcher and can be delivered to a researcher’s user-level control program which then decides if a new flow-entry should be added to the network of switches.
+4.10.1	Working of Controller
+Our Openflow controller works as a central entity which manages all the switch functionality. Controller decides the path of the packet, installs flows, and manages all the switches associated with a particular controller. A controller adds and removes flow-entries from the Flow Table on behalf of experiments. For example, a static controller might be a simple application running on a PC to statically establish flows to interconnect a set of test computers for the duration of an experiment. In this case the flows resemble VLANs in current networks providing a simple mechanism to isolate experimental traffic from the production network. Viewed this way, OpenFlow is a generalization of VLANs. One can also imagine more sophisticated controllers that dynamically add/remove flows as an experiment progresses. In one usage model, a researcher might control the complete network of OpenFlow Switches and be free to decide how all flows are processed. A more sophisticated controller might support multiple researchers, each with different accounts and permissions, enabling them to run multiple independent experiments on different sets of flows. Flows identified as under the control of a particular researcher (e.g., by a policy table running in a controller) could be delivered to a researcher’s user-level control program which then decides if a new flow-entry should be added to the network of switches. The working of Openflow swtich is summarized below graphically using flow diagrams. As we know Openflow switch consists of two parts:
+1) Switch
+2) Controller
+
+Flow Diagram of OpenFlow Switch
+On receipt of a packet, an OpenFlow Switch performs the functions shown in fig 3.18. Initially, the Switch receives the packet and checks its routing table if there is a rule to indicate what action has to perform the Switch with this package. Here, there are two possible cases:
+
+•	If the routing table of Switch has a specific rule for that packet, the Switch will apply the rule and send the packet according to the rule.
+•	Otherwise, if there is no rule for this type of package, the Switch forwards the packet to the Controller and waits for a response from the Controller. In this response, the Controller will indicate to the Switch the actions to be performed on this package.
+
+ 
+FIG 3.18: Flow chart detailing packet flow through an openflow switch.
+
+Flow Diagram of the Controller
+On receipt of a packet, an OpenFlow Controller performs the functions shown in Figure 3.19. If the switch does not know what actions to perform on a specific package, forward the packet to the controller. The controller will receive the packet from the switch and the same controller examines the package to verify that it is an Ethernet packet type. Here, there are two possible cases:
+•	If the packet is not Ethernet packet, the Controller discards the packet.
+•	If is an Ethernet packet, the controller will analyze the packet headers to obtain the source and destination information (MAC address and IP address). After, the Controller inserts the necessary rules in the Switch in order that the Switch can route the packet to the destination.
+ 
+FIG 3.19: Flow diagram detailing packet flow through an Openflow controller.
+4.11	Types of Controller
+There are different types of Openflow controller platforms available by which you can create your applications to run on the controller. Using those controller platforms you can set up your experiments by applying them on the controller servers. The controllers are differentiated by the nature of the programming language in which they are written.
+ Some of the controller’s platforms are listed below.
+1. NOX CLASSIC
+2. NOX
+3. POX
+4. TREAMA
+5. BEACON
+6. FLOOD LIGHT
+7. RUBY
+8. SNAC
+9. MAESTRO
+10. HELIOS
+11. BIGSWITCH
+
+Comparison between different Controllers
+
+These controllers are selected on the basis of type of application, availability, capabilities etc. some of the controllers are compared below.
+Table 3: Comparison of controllers 
+ 
+4.11.1	Selection of Controller
+We have implemented three controllers so that we can test the performance of these controllers and choose the best controller from them for our applications to be built. The controllers are:
+1. NOX CLASSIC
+2. NOX
+3. POX
+NOX CLASSIC
+NOX-Classic is a network control platform, that provides a high-level programmatic interface upon which network management and control applications can be built. In brevity, NOX CLASSIC is an OpenFlow controller. Therefore, NOX-CLASSIC applications mainly assert flow-level control of the network---meaning that they determine how each flow is routed or not routed in the network.
+Different from standard network development environments (such as building routers within or on top of Linux), NOX –CLASSIC allows a centralized programming model for an entire network. It is designed to support both large enterprise networks of hundreds of switches (supporting many thousands of hosts) and smaller networks of a few hosts.
+NOX-CLASSIC core provides applications with an abstracted view of the network resources, including the network topology and the location of all detected hosts. The primary goals of NOX-CLASSIC are:
+•	To provide a platform which allows developers and researchers to innovate within home or enterprise networks using real networking hardware. Developers on NOX-CLASSIC can control all connectivity on the network including forwarding, routing, which hosts and users are allowed etc. In addition, NOX-CLASSIC can interpose on any flow.
+•	To provide usable network software for operators. The current release includes central management for all switches on a network, admission control at the user and host level, and a full policy engine.
+
+This release of NOX-CLASSIC is for developers. Applications can be written in C/C++ and/or Python. NOX-CLASSIC provides a high-level API for OpenFlow as well as to other network controls functions.
+As previously stated, NOX-CLASSIC controls the network switches through the OpenFlow protocol. Therefore it requires at least one switch on the network to support OpenFlow. It is worth noting that NOX-CLASSIC is able to support networks composed of OpenFlow switches interconnected with traditional L2 switches and L3 routers.
+
+NOX
+NOX is intended to provide a programmatic platform for controlling one or more OpenFlow switches. It is an open platform for developing management functions for enterprise and home networks. NOX runs on commodity hardware and provides a software environment on top of which programs can control large networks at Gigabit speeds. More practically, NOX enables the following:
+•	NOX provides sophisticated network functionality (management, visibility, monitoring, access controls, etc.) on extremely cheap switches.
+•	Developers can add their own control software and, unlike standard *nix based router environments, NOX provides an interface for managing off the shelf hardware switches at line speeds.
+•	NOX provides a central programming model for an entire network – one program can control the forwarding decisions on all switches on the network. This makes program development much easier than in the standard distributed fashion.
+NOX can be extended both in C++ or Python and provides an abstracted interface to OpenFlow. The current version contains a set of example applications and some built in libraries which provide useful network functions such as host tracking and routing.
+How does NOX work?
+NOX’s control software runs on a single commodity PC and manages the forwarding tables of multiple switches.
+NOX exports a programmatic interface on top of which multiple network programs (which we call applications) can run. These applications can hook into network events, gain access to traffic, control the switch forwarding decisions, and generate traffic.
+NOX is able to do this in a scalable manner by operating on network flows (as opposed to every packet). For each new flow on the network, the first packet is sent to NOX which passes it to interested applications. The applications can then: determine whether (and how) to forward the flow on the network; collect statistics; modify the packets in the flow (e.g. adding a VLAN tag); or view more packets within the same flow to gain more information.
+This flow-level network view provides applications with a tremendous amount of control. Applications have already been built on NOX which reconstruct the network topology, track hosts as they move around the network, provide fine-grained network access controls, and manage network history (thereby allowing reconstruction of previous network states).
+
+Versioning
+There is always two versions of NOX that are supported:
+1.	Master [aka] where things are relatively stable and the majority of the commits are bug fixes
+2.	Destiny [aka] where "random" things are committed and tried out.
+
+POX
+POX is NOX‘s younger sibling.  At its core, it’s a platform for the rapid development and prototyping of network control software using Python.  Meaning, at a very basic level, it’s one of a growing number of frameworks (including NOX, Floodlight, Trema, etc., etc.) for helping you write an OpenFlow controller.
+
+POX also goes beyond this.  As well as being a framework for interacting with OpenFlow switches, we’re using it as the basis for some of our ongoing work to help build the emerging discipline of Software Defined Networking.  We’re using it to explore and prototype distribution, SDN debugging, network virtualization, controller design, and programming models.  Our ultimate goal is to develop an archetypal, modern SDN controller.
+POX’s is under active development, and we hope it stays that way.  Is primary target is research, and many research projects are fairly short-lived.  Thus, our focus is on trying to get interfaces right rather than on, say, maintaining a stable API.  
+
+Some quick POX features:
+	“Pythonic” OpenFlow interface
+	Reusable sample components for path selection, topology discovery, etc.
+	“Runs anywhere” – Can bundle with install-free PyPy runtime for easy deployment
+	Specifically targets Linux, Mac OS, and Windows
+	Supports the same GUI and visualization tools as NOX
+	Performs well compared to NOX applications written in Python (especially when run under PyPy — see chart)
+ “ 
+Fig 3.20: Comparison b/w Pox, Nox, Nox Classic
+Out of these three controllers the best one we choose for our project is POX because it’s easy to deploy, easy to understand, easy to run on systems, easy to develop application, efficient performance, and fast.
+The development of POX applications will be described later.
+4.12	OpenFlow Switch Simulator
+We are using a simulator to test our different applications by setting up the virtual network. The simulator we are using is MiniNet. It is used for the virtual set up of Openflow switch.
+4.12.1	MININET
+MiniNet supports research, development, learning, prototyping, testing, debugging, and any other tasks that could benefit from having a complete experimental network on a laptop or other PC. With MiniNet is possible to create a scalable (up to hundreds of nodes, depending on your configuration) networks on a single PC by using Linux processes in network namespaces. Also, MiniNet allows you to quickly create, interact with, customize and share a software defined network prototype, and provides a smooth path to running on hardware.
+MiniNet provides an easy way to get correct system behavior and experiment with topologies. The code you develop and test on MiniNet, for an OpenFlow controller, modified switch, or host, can move to a real system with no changes, for real-world testing, performance evaluation, and deployment.
+
+
+
+Requirements to implement the Scenario
+The requirements to implement this scenario are the following (table 4).
+Table 4: Requirements 
+ 
+Evaluation Test
+The test is run on the same device the designed application and the MiniNet tool to check the Controller behavior. With the MiniNet tool have been emulated a Switch connected directly to the controller. Each Switch has 3 devices connected and consequently these devices are connected directly to the controller.
+The command to create this network in the Virtual Machine with MiniNet is the following 4.2. This tells MiniNet to start up a 3-host, single-(openvSwitch-based) switch topology, set the MAC address of each host equal to its IP, and point to a remote controller which defaults to the local host. Exactly, using this command is performed the following actions:
+Create 3 virtual hosts, each with a separate IP address.
+Create a single OpenFlow software switch in the kernel with 3 ports.
+Connected each virtual host to the switch with a virtual ethernet cable.
+Set the MAC address of each host equal to its IP.
+Configure the OpenFlow switch to connect to a remote controller.
+Table 5: Configuring Controller
+ Table 4.2: Command MiniNet
+There have been performed several types of simulations, sending messages between host 2 and 3 and checking the behavior of the Controller.
+
+4.13	OpenFlow Channel
+The OpenFlow channel is the interface that connects each OpenFlow switch to a controller. Through this interface, the controller configures and manages the switch, receives events from the switch, and sends packets out the switch. Between the datapath and the OpenFlow channel, the interface is implementation-specific, however all OpenFlow channel messages must be formatted according to the OpenFlow protocol. The OpenFlow channel is usually encrypted using TLS, but may be run directly over TCP.
+4.13.1	OPENFLOW PROTOCOL
+The OpenFlow Standard defines an OpenFlow Protocol for communication between the OpenFlow switch and the controller. The OpenFlow Switch must be able to establish communication with a controller at a user-configurable IP address, using a user-specified port. If the switch knows the IP address of the controller, the switch initiates a standard TCP connection to the controller.
+4.13.2	OpenFlow Protocol Overview
+The OpenFlow protocol supports three message types, controller-to-switch, asynchronous, and symmetric, each with multiple sub-types. Controller-to-switch messages are initiated by the controller and used to directly manage or inspect the state of the switch. Asynchronous messages are initiated by the switch and used to update the controller of network events and changes to the switch state. Symmetric messages are initiated by either the switch or the controller and sent without solicitation. The message types used by OpenFlow are described below.
+Controller-to-Switch
+Controller/switch messages are initiated by the controller and may or may not require a response from the switch.
+Features: The controller may request the capabilities of a switch by sending a features request, the switch must respond with a features reply that specifies the capabilities of the switch. This is commonly performed upon establishment of the OpenFlow channel.
+Configuration: The controller is able to set and query configuration parameters in the switch. The switch only responds to a query from the controller.
+Modify-State: Modify-State messages are sent by the controller to manage state on the switches. Their primary purpose is to add/delete and modify flows/groups in the OpenFlow tables and to set switch port properties.
+Read-State: Read-State messages are used by the controller to collect statistics from the switch.
+Packet-out: These are used by the controller to send packets out of a specified port on the switch, and to forward packets received via Packet-in messages. Packet-out messages must contain a full packet or a buffer ID referencing a packet stored in the switch. The message must also contain a list of actions to be applied in the order they are specified; an empty action list drops the packet.
+Barrier: Barrier request/reply messages are used by the controller to ensure message dependencies have been met or to receive notifications for completed operations.
+Asynchronous
+Asynchronous messages are sent without the controller soliciting them from a switch.
+Switches send asynchronous messages to the controller to denote a packet arrival, switch state change, or error. The four main asynchronous message types are described below.
+Packet-in: For all packets that do not have a matching flow entry, a packet-in event may be sent to the controller (depending on the table configuration). For all packets forwarded to the CONTROLLER virtual port, a packet-in event is always sent to the controller. If the switch has sufficient memory to buffer packets that are sent to the controller, the packet-in events contain some fraction of the packet header (by default 128 bytes) and a buffer ID to be used by the controller when it is ready for the switch to forward the packet. Switches that do not support internal buffering (or have run out of internal buffering) must send the full packet to the controller as part of the event. Buffered packets will usually be processed via a Packet-out message from the controller, or automatically expired after some time.
+Flow-Removed: When a flow entry is added to the switch by a flow modify message, an idle timeout value indicates when the entry should be removed due to a lack of activity, as well as a hard timeout value that indicates when the entry should be removed, regardless of activity. The flow modify message also specifies whether the switch should send a flow removed message to the controller when the flow expires. Flow delete requests should generate flow removed messages for any flows with the OFPFF_SEND_FLOW_REM flag set.
+Port-status: The switch is expected to send port-status messages to the controller as port configuration state changes. These events include change in port status events (for example, if it was brought down directly by a user).
+Error: The switch is able to notify the controller of problems using error messages.
+Symmetric
+Symmetric messages are sent without solicitation, in either direction.
+Hello: Hello messages are exchanged between the switch and controller upon connection startup.
+Echo: Echo request/reply messages can be sent from either the switch or the controller, and must return an echo reply. They can be used to measure the latency or bandwidth of a controller-switch connection, as well as verify its liveness.
+Experimenter: Experimenter messages provide a standard way for OpenFlow switches to offer additional functionality within the OpenFlow message type space. This is a staging area for features meant for future OpenFlow revisions.
+4.14	Connection Setup
+The switch must be able to establish communication with a controller at a user-configurable (but otherwise fixed) IP address, using a user-specified port. If the switch knows the IP address of the controller, the switch initiates a standard TLS or TCP connection to the controller. Traffic to and from the OpenFlow channel is not run through the OpenFlow pipeline. Therefore, the switch must identify incoming traffic as local before checking it against the flow tables. Future versions of the protocol specification will describe a dynamic controller discovery protocol in which the IP address and port for communicating with the controller is determined at runtime.
+When an OpenFlow connection is first established, each side of the connection must immediately send an OFPT_HELLO message with the version field set to the highest OpenFlow protocol version supported by the sender. Upon receipt of this message, the recipient may calculate the OpenFlow protocol version to be used as the smaller of the version number that it sent and the one that it received. If the negotiated version is supported by the recipient, then the connection proceeds. Otherwise, the recipient must reply with an OFPT_ERROR message with a type field of OFPET_HELLO_FAILED, a code field of OFPHFC_COMPATIBLE, and optionally an ASCII string explaining the situation in data, and then terminate the connection.
+4.15	Connection Interruption
+In the case that a switch loses contact with the current controller, as a result of an echo request timeout, TLS session timeout, or other disconnection, it should attempt to contact one or more backup controllers. The ordering by which a switch contacts backup controllers is not specified by the protocol. The switch should immediately enter either “fail secure mode” or “fail standalone mode” if it loses connection to the controller, depending upon the switch implementation and configuration. In “fail secure mode”, the only change to switch behavior is that packets and messages destined to the current controller are dropped. Flows should continue to expire according to their timeouts in “fail secure mode”. In “fail standalone mode”, the switch processes all packets using the OFPP_NORMAL port; in other words, the switch acts as a legacy Ethernet switch or router. Upon connecting to a controller again, the existing flow entries remain. The controller then has the option of deleting all flow entries, if desired. The first time a switch starts up, it will operate in either “fail secure mode” or “fail standalone mode” mode. Configuration of the default set of flow entries to be used at startup is outside the scope of the OpenFlow protocol.
+Controller-to-Switch Messages
+HANDSHAKE
+Upon TLS session establishment, the controller sends an OFPT_FEATURES_REQUEST message. This message does not contain a body beyond the OpenFlow header. The switch responds with an OFPT_FEATURES_REPLY message:
+The datapath_id field uniquely identifies a datapath. The lower 48 bits are intended for the switch MAC address, while the top 16 bits are up to the implementer. An example use of the top 16 bits would be a VLAN ID to distinguish multiple virtual switch instances on a single physical switch. This field should be treated as an opaque bit string by controllers.
+The n_buffers field specifies the maximum number of packets the switch can buffer when sending packets to the controller. Switches that support buffering can send only the number of bytes specified in the switch configuration or send to controller action.
+The n_tables field describes the number of tables supported by the switch, each of which can have a different set of supported wildcard bits and number of entries. When the controller and switch first communicate, the controller will find out how many tables the switch supports from the Features Reply. If it wishes to understand the size, types, and order in which tables are consulted, the controller sends OFPST_TABLE stats request. A switch must return these tables in the order the packets traverse the tables.
+Switch Configuration
+The controller is able to set and query configuration parameters in the switch with the OFPT_SET_CONFIG and OFPT_GET_CONFIG_REQUEST messages, respectively. The switch responds to a configuration request with an OFPT_GET_CONFIG_REPLY message; it does not reply to a request to set the configuration.
+The OFPC_FRAG_* flags indicate whether IP fragments should be treated normally, dropped, or reassembled. “Normal” handling of fragments means that an attempt should be made to pass the fragments through the OpenFlow tables. If any field is not present (e.g., the TCP/UDP ports didn’t fit), then the packet should not match any entry that has that field set.
+The OFPC_INVALID_TTL_TO_CONTROLLER flag indicates whether packets with invalid IP TTL or MPLS TTL should be dropped or sent to the controller. The flag is cleared by default, causing invalid packets to get dropped.
+The miss_send_len field defines the number of bytes of each packet sent to the controller as a result of both flow table misses and flow table hits with the controller as the destination. If this field equals 0, the switch must send a zero-size packet_in message.
+Flow Table Configuration
+The controller can configure and query table state in the switch with the OFP_TABLE_MOD and OFPST_TABLE_STATS requests, respectively.
+Packet-Out Message
+When the controller wishes to send a packet out through the datapath, it uses the OFPT_PACKET_OUT message.
+The buffer_id is the same given in the ofp_packet_in message. If the buffer_id is -1, then the packet data is included in the data array. The action field is an action list defining how the packet should be processed by the switch. It may include packet modification, group processing and an output port. The action list of an OFPT_PACKET_OUT message can also specify the OFPP_TABLE reserved virtual port as an output action to process the packet through the existing flow entries, starting at the first flow table. If OFPP_TABLE is specified, the in_port field is used as the ingress port in the flow table lookup. The in_port field must be set to either a valid switch port or OFPP_CONTROLLER.
+Packets sent to OFPP_TABLE may be forwarded back to the controller as the result of a flow action or table miss. Detecting and taking action for such controller-to-switch loops is outside the scope of this specification. In general, OpenFlow messages are not guaranteed to be processed in order, therefore if a OFPT_PACKET_OUT message using OFPP_TABLE depends on a flow that was recently sent to the switch (with a OFPT_FLOW_MOD message), a OFPT_BARRIER_REQUEST message may be required prior to the OFPT_PACKET_OUT message to make sure the flow was committed to the flow table prior to execution of OFPP_TABLE.
+
+Barrier Message
+When the controller wants to ensure message dependencies have been met or wants to receive notifications for completed operations, it may use an OFPT_BARRIER_REQUEST message. This message has no body. Upon receipt, the switch must finish processing all previously-received messages, including sending corresponding reply or error messages, before executing any messages beyond the Barrier Request. When such processing is complete, the switch must send an OFPT_BARRIER_REPLY message with the xid of the original request.
+Asynchronous Messages
+Packet-In Message
+When packets are received by the datapath and sent to the controller, they use the OFPT_PACKET_IN message.
+The in_phy_port is the physical port on which the packet was received. The in_port is the virtual port through which a packet was received or physical port if the packet was not received on a virtual port. The port referenced by the in_port field must be the port used for matching flows (see 4.4) and must be available to OpenFlow processing (i.e. OpenFlow can forward packet to this port, depending on port flags).
+For example, consider a packet received on a tunnel interface. This tunnel interface is defined over a link aggregation group (LAG) with two physical port members and the tunnel interface is the virtual port bound to OpenFlow. In this case, the in_port is the tunnel port no and the in_phy_port is the physical port no member of the LAG on which the tunnel is configured. If a packet is received directly on a physical port and not processed by a virtual port, in_port should have the same value as in_phy_port.
+The buffer_id is an opaque value used by the datapath to identify a buffered packet. When a packet is buffered, some number of bytes from the message will be included in the data portion of the message. 
+If the packet is sent because of a “send to controller” action, then max_len bytes from the ofp_action_output of the flow setup request are sent. If the packet is sent because of a flow table miss, then at least miss_send_len bytes from the OFPT_SET_CONFIG message are sent. The default miss_send_len is 128 bytes. If the packet is not buffered, the entire packet is included in the data portion, and the buffer_id is -1.
+Switches that implement buffering are expected to expose, through documentation, both the amount of available buffering, and the length of time before buffers may be reused. A switch must gracefully handle the case where a buffered packet_in message yields no response from the controller. A switch should prevent a buffer from being reused until it has been handled by the controller, or some amount of time (indicated in documentation) has passed. The reason field can be any of these values:
+/* Why is this packet being sent to the controller? */
+enum ofp_packet_in_reason {
+OFPR_NO_MATCH,/* No matching flow. */
+OFPR_ACTION/* Action explicitly output to controller. */
+};
+Symmetric Messages
+Hello
+The OFPT_HELLO message has no body; that is, it consists only of an OpenFlow header. Implementations must be prepared to receive a hello message that includes a body, ignoring its contents, to allow for later extensions.
+Echo Request
+An Echo Request message consists of an OpenFlow header plus an arbitrary-length data field. The data field might be a message timestamp to check latency, various lengths to measure bandwidth, or zero-size to verify liveness between the switch and controller.
+Echo Reply
+An Echo Reply message consists of an OpenFlow header plus the unmodified data field of an echo request message. In an OpenFlow protocol implementation divided into multiple layers, the echo request/reply logic should be implemented in the”deepest” practical layer. For example, in the OpenFlow reference implementation that includes a userspace process that relays to a kernel module, echo request/reply is implemented in the kernel module. Receiving a correctly formatted echo reply then shows a greater likelihood of correct end-to-end functionality than if the echo request/reply were implemented in the userspace process, as well as providing more accurate end-to-end latency timing.
+4.16	Communication between Switch and Controller
+After understanding the types of messages between controller and switch, now I will describe that how these messages travel across each other and in which order. As you know that we have implemented Openflow switch on NetFPGA so here our switch is NetFPGA which is a PCI card located on the PCI slot of the system. Now between NetFPGA and system application kernel is involved in the transfer of the packets which uses DMA transfer to transfer the packet to the application layer and vice versa. Whenever an unknown packet comes to the switch the switch forwards that packet to the kernel. The kernel takes that packet and forward to the application layer and then application forwards the packet to the controller through NIC. But for that to be happened there must be a communication between controller and the switch to take these packets from one another. After the 3-way TCP handshake the client server communication starts, but for the Openflow communication Openflow protocols needs to be implemented. For the Openflow communication certain messages transfer between controller and switch. The order of these messages are written below:
+1.	First of all the hello packets comes from the controller to the switch. The switch open ups the packet checks the Openflow header attached and check what type of packet is it. If it is the hello packet the switch sends back the hello message.
+2.	The second step after the hello reply the controller sends the feature request message to the switch. In the same way the switch checks the message type if its features request then the switch returns the features reply packet to the controller in which switch sends its features.
+3.	In third step the controller sends set config message.
+4.	Then in fourth step controller sends the barrier request and in return gets the barrier reply from the switch. Here the Openflow protocol is implemented and now the Openflow communication can take place. 
+5.	After wards both controller and switch can send packets to each other.
+
+
+
+
+
+
+
+
+Fig 3.21: Reading from a flow table
+
+
+Fig 3.22: Reading from a flow table
+
+4.17	APPLICATIONS
+So far we have developed four different applications on Openflow controller platform, for which we have used POX. These applications are:
+1. HUB
+2. L2 SWITCH
+3. L3 SWITCH
+4. ROUTER
+HUB
+Hubs enable computers on a network to communicate. Each computer plugs into the hub with an Ethernet cable, and information sent from one computer to another passes through the hub. A hub can't identify the source or intended destination of the information it receives, so it sends the information to all of the computers connected to it, including the one that sent it. A hub can send or receive information, but it can't do both at the same time. This makes hubs slower than switches. Hubs are the least complex and the least expensive of these devices.
+Our algorithm is:
+1. Takes packet.
+2. Modify the packet.
+3. Append the action with packet.
+3. Send the packet.
+LAYER 2 SWITCH (L2 SWITCH)
+Layer 1, also referred to as the Physical Layer, describes the electrical interface and isn't of much interest to switch vendors. Rather it's to Layer 2 (the Data Link layer) that most switches look when deciding how to move packets around a network. It's here, for instance, that a switch can find the Media Access Control or MAC address of both sending and receiving devices.
+Layer 2 switches learn MAC addresses automatically, building a table which can be used to selectively forward packets. For example, if a switch receives packets from MAC address X on Port 1 it then knows that packets destined for MAC address X can simply be forwarded out of that port rather than having to try each available port in turn.
+Because Layer 2 information is easily retrieved, packets can be forwarded (switched) very quickly, typically, at the wire speed of the network. Layer 2 switching, therefore, has little or no impact on network performance or bandwidth. And because they are relatively dumb devices no setup or management is required, making them cheap and easy to deploy.
+What Layer 2 switches can't do?
+What Layer 2 switches can't do is apply any intelligence when forwarding packets. They can't route packets based on IP address or priorities packets sent by particular applications to, for example, guarantee bandwidth to Voice over IP users.
+ 
+Fig 3.23: Segment tables of Switch
+Our L2 switch also works in such a manner. Our algorithm works in the following.
+For each packet from the switch:
+  1) Use source address and switch port to update address/port table
+  2) Is transparent = False and either Ethertype is LLDP or the packet's destination address is a Bridge Filtered address?
+     Yes:
+        2a) Drop packet -- don't forward link-local traffic (LLDP, 802.1x)
+            DONE
+  3) Is destination multicast?
+     Yes:
+        3a) Flood the packet
+            DONE
+  4) Port for destination address in our address/port table?
+     No:
+        4a) Flood the packet
+            DONE
+  5) Is output port the same as input port?
+     Yes:
+        5a) Drop packet and similar ones for a while
+  6) Install flow table entry in the switch so that this flow goes out the appropriate port
+     6a) Send the packet out appropriate port.
+LAYER 2 FORWARDING SIMULATION RESULT
+
+
+
+
+
+
+
+Fig 3.24: result of L2
+Table6: Layer 2 Mac
+MAC SRC	MAC DST	SRC IP	DEST IP	TCP DPORT	TCP SPORT	ACTION	COUNT
+*	00-B0-D0-86-BB-F7	*	*	*	*	PORT 1	250
+*	00-B0-33-we-B3-g4	*	*	*	*	PORT 2	350
+L3 SWITCH
+L3 switch works on the basic principle of both router and switch. A router works on L3 which works on L3, whereas switch works on the basis of MAC address. So in our L3 switch when the packet comes to the controller the controller checks it ip address in the table and check which MAC address and Port is against that IP address and then forwards the packet on the basis of MAC address.
+Our algorithm works in such a way: 
+1) Keep a table that maps IP addresses to MAC addresses and switch ports. Stock this table using information from ARP and IP packets.
+2) When you see an ARP query, try to answer it using information in the table from step 1.  If the info in the table is old, just flood the query.
+3) Flood all other ARPs.
+4) When you see an IP packet, if you know the destination port (because it's in the table from step 1), install a flow for it.
+Table 7: Layer 2 Mac and IP
+MAC SRC	MAC DST	SRC IP	DEST IP	TCP DPORT	TCP SPORT	ACTION	COUNT
+*	10-B0-T0-86-BB-F7	*	10.1.1.0/24	*	*	PORT 1	250
+*	10-20-D0-86-BB-F7	*	10.1.2.0/24	*	*	PORT 2	350
+*	*	*	*	*	*	PORT 3	890
+ROUTER
+A router is a device which joins different networks to send data across the world. Router is the main device through which we a able to communicate with each other at long distances. 
+Router works on the basis of IP address. When a packet comes to the router the router checks its destination IP address and check in its routing table and takes a decision on which port to forward the packet. The router joins different networks so router knows which network is connected to which port and from where the packet comes and where to send the packet. If the destination address is unknown to the router the router simply drops the packet. 
+Our algorithm is:
+1.  Checks the IP address in the flow table.
+2.  Matches the entry.
+3.  If entry is present then forward the packet to the corresponding port.
+4.  If no entry then drops the packet.
+ROUTER FORWARDING SIMULATION RESULT
+ 
+Fig 3.25: ROUTER FORWARDING
+
+
+
+
+Table 8: IP Address
+MAC SRC	MAC DST	SRC IP	DEST IP	TCP DPORT	TCP SPORT	ACTION	COUNT
+*	*	*	10.1.1.0/24	*	*	PORT 1	250
+*	*	*	10.1.2.0/24	*	*	PORT 2	350
+*	*	*	*	*
+*	PORT 3	890
+
+4.18	Network Setup
+Now we will explain how we developed Openflow network in detail. The basic topology we implemented is show in figure below.
+Fig 3.26: Network System
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+To set up Openflow network we need a openflow switch which we have implemented on NetFPGA and a Openflow Controller which we are using POX for the forwarding of packets and we attached three host systems to the NetFPGA ports which communicates with each other via Openflow switch. 
+If one host wants to send packet to another host the packet will first go to the Openflow switch and then if the switch has the destination address in its table then it forwards the packet to the outport otherwise the Openflow switch will forward the packet using Openflow protocol which we had implemented. And now the controller will decide what to do with the packet. 
+Basically we have developed the controller application so now it’s our choice what to do with the packet depending on the nature of the application we are running. 
+CONFIGURATION OF OPENFLOW SWITCH AS HUB:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fig 3.27: Hub
+In this application Openflow switch is working as a HUB. Hub only connects the systems to one point. If any host send a packet the switch Hub will forward the packets on all ports and thus the host for which the packet meant to be gets that packet.
+CONFIGURATION OF OPENFLOW SWITCH AS L2 SWITCH:
+We have developed L2 switch application using the main functionality of the switch. The controller will configure the Openflow switch as L2 Switch. Switch works on the basis of MAC address. If host send a packet to the switch it will check the Destination MAC address of the packet and if the address relies in the flow table then it forwards the packet on the basis of MAC address. And if the packet is not in the flow table then the switch will send the packet to the controller and now controller will decide what to do with the packet. Either to drop it or send it to the out port. Controller will append the action and forward the packet to switch and now switch will forward the packet to the particular port which the controller has told in the action appended in the packet header.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fig 3.28: L2 Switch
+
+CONFIGURATION OF OPENFLOW SWITCH AS ROUTER:
+We have developed L3 router application. The controller will configure the Openflow switch as Router. Router works on the basis of IP address. If host send a packet to the switch it will check the Destination IP address of the packet and if the address relies in the flow table then it forwards the packet on the port on the basis of IP address. And if the packet is not in the flow table then the switch will send the packet to the controller and now controller will decide what to do with the packet, either to drop it or send it to the out port. Controller will append the action and forward the packet to switch and now switch will forward the packet to the particular port which the controller has told in the action appended in the packet header.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fig 3.29: Router
+CHAPTER   5 - PROJECT DELIVERABLES
+The project deliverables at the completion of the project are as follows:
+1.	Complete NetFPGA 1-G hardware with Openflow switch running on it. 
+2.	Complete NetFPGA 10-G hardware with Openflow switch running on it. 
+5.1	: WORK BREAK DOWN STRUCTURE
+
+Fig 3.30: WBS
+ 
+CHAPTER   6- OPENFLOW SWITCH SETUP
+Description of an Example Setup
+We have created an OpenFlow network with three OpenFlow switches controlled by POX controller. Among three OpenFlow switches, two are PC based software OpenFlow switches and one is NetFPGA based hardware OpenFlow switch. If you don’t have NetFPGA board, then just use a PC instead. 
+OpenFlow Controller (POX)
+Table 9: IP & Port
+ 
+6.1	 Hardware Requirements
+PCs for OpenFlow Switches
+These are PC1, PC2 and PC3 shown in the figure. We’ll run OpenFlow software reference design on those PCs. Any PC running Linux 2.6 kernel would work, but there are some dependencies on the Linux distribution. Depending on the network topology you would like to create, you need to install NICs (network interface cards) on those PCs. Note that NetFPGA only work with 1Gb/s Ethernet (not 100Mbps or 10Mbps), so the interface connecting to the NetFPGA interface has to be gigabit Ethernet NIC. In the configuration shown in the figure, you need three Ethernet ports on each PC.
+PC for OpenFlow Controller
+This is for PC4 shown in the figure. Currently we have three different types of OpenFlow controllers, NOX, SNAC and POX Controller. In this page, we use POX for the controller Setup OpenFlow Switches on PCs /NetFPGA.
+Setup OpenFlow Switch on PC
+There are two different OpenFlow v1.0 switch implementations available. One is Stanford’s software reference design and the other is OpenVswitch (http://openvswitch.org/) implementation. While the former has user-space implementation, the latter has kernel-space implementation. The forwarding performance is (naturally) better in the kernel space implementation. Adding new features would be easier in the user space implementation. Pick the one depending on your need.
+6.2	 Software Reference Design
+Step1. Download Software
+ $ git clone git://gitosis.stanford.edu/openflow.git
+ $ cd openflow
+ $ git checkout -b openflow.v1.0 origin/release/1.0.0
+Step2. Compile
+$ ./boot.sh
+$. /configure
+$ make
+Step3. Run OpenFlow Switch
+Here we assume eth1 and eth2 will be included in OpenFlow datapath. We also need to assign datapath-id to this OpenFlow switch. The datapath-id has to be unique among the switches controlled by a single OpenFlow controller. One way to pick a unique datapath id is to use MAC address of one of this PC’s interface. Let’s assume we’ll use datapath-id 0x004E46324304 for this OpenFlow switch.
+
+# ./udatapath/ofdatapath --detach punix:/var/run/dp0 -d 004E46324304 -i eth1,eth2
+Note: ‘–detach’ option make it run in background as daemon. ‘punix:/var/run/dp0′ is specifying an Unix domain socket file through which we can talk to this switch.
+Step4. Let OpenFlow Switch talk to the controller
+Then run OpenFlow protocol module talk to the controller. Here we assume the controller is running on 192.168.0.100 port 6633.
+ # ./secchan/ofprotocol unix:/var/run/dp0 tcp:192.168.0.100:6633
+Note that the file name ‘/var/run/dp0′ has to be consistent to the UNIX domain socket file name we specified in the previous step.
+
+
+ Controller Setup
+We’ll setup POX here.
+Step0. Install Pre-requisite Packages
+Prerequisite packages depend on the Linux distribution on the controller PC. In the case of Debian Stable (Lenny), you have to install the following packages:
+$ apt-get install autoconf automake g++ libtool python python-twisted \
+swig libboost1.35-dev libxerces-c2-dev libssl-dev make        \
+libsqlite3-dev python-simplejson        \
+python-sphinx
+Step1. Download Software
+ $ git clone git://poxrepo.org/pox
+ $ cd pox
+By default, you’ll get OpenFlow v0.8.9 compatible POX (as of 5/20/2010). If you want to OpenFlow v1.0 compatible POX, then you need to checkout the corresponding branch. Here is the instruction:
+
+ #### this is only for OpenFlow v1.0 user
+   $ git branch -a
+      * master
+remotes/origin/HEAD -> origin/master
+remotes/origin/destiny
+remotes/origin/master
+      remotes/origin/openflow-0.9
+      remotes/origin/openflow-1.0
+   $ git checkout -b pox_v06_ofv1.0 remotes/origin/openflow-1.0
+   $ git branch -a
+master
+      * POX_v06_ofv1.0
+remotes/origin/HEAD -> origin/master
+remotes/origin/destiny
+remotes/origin/master
+remotes/origin/openflow-1.0
+Step2. Compile
+$ ./boot.sh
+$ mkdir build
+$ cd build/
+$ ../configure
+$ make
+Step3. Run
+Run POX with routing module only. Routing module will do the shortest path routing.
+$ cd src
+$ ./pox_core -i ptcp:6633 routing
+5. Basic Test
+On the controller PC, first check the switches are connected to the controller. You can check this by
+. On each switch, you can run the following command to see the flow table is actually installed.
+
+CONCLUSION
+OpenFlow provides a simple way to innovate in your network. It allows researchers to implement experimental protocols and run them over a production network alongside real traffic. We have implemented OpenFlow on the NetFPGA, a reprogrammable hardware platform for networking. Some issues remain to be addressed as the protocol matures. These include how to protect the controller or the switch from denial of service attacks, how to manage an OpenFlow network so that multiple controllers can be running, how to extend OpenFlow to handle more than TCP/IP or UDP/IP traffic, and how to handle broadcasts elegantly. Other issues such as QoS and enabling dynamic circuit switching are still to be decided on.
+We are successful in deploying OpenFlow networks in our campus. We hope that OpenFlow will gradually catch on in other universities, increasing the number of networks that support experiments. We hope that a new generation of control software emerges, allowing researchers to reuse controllers and experiments, and build on the work of others. And over time, we hope that the islands of OpenFlow networks at different universities will be interconnected by tunnels and overlay networks, and perhaps by new OpenFlow networks running in the backbone networks that connect universities to each other.
+
+
+
+
+
+
+
+
+
+
+REFERENCES
+
+[1].	 Mark Handley Orion Hodson Eddie Kohler. “XORP:
+       An Open Platform for Network Research,” ACM
+       SIGCOMM Hot Topics in Networking, 2002.
+[2].	 Eddie Kohler, Robert Morris, Benjie Chen, John
+       Jannotti, and M. Frans Kaashoek. “The Click modular
+       router,” ACM Transactions on Computer Systems
+       18(3), August 2000, pages 263-297
+[3].	 J. Turner, P. Crowley, J. Dehart, A. Freestone, B.
+        Heller, F. Kuhms, S. Kumar, J. Lockwood, J. Lu,
+        M.Wilson, C. Wiseman, D. Zar. “Supercharging
+        PlanetLab - High Performance, Multi-Application,
+        Overlay Network Platform,” ACM SIGCOMM ’07,
+        August 2007, Kyoto, Japan
+[4].	 NetFPGA: Programmable Networking Hardware. Web
+        site http://netfpga.org
+[5].	 The OpenFlow Switch Speciﬁcation. Available at
+        http://OpenFlowSwitch.org
+[6].	 Martin Casado, Michael J. Freedman, Justin Pettit,
+       Jianying Luo, Nick McKeown, Scott Shenker. “Ethane:
+       Taking Control of the Enterprise,” ACM SIGCOMM
+       ’07, August 2007, Kyoto, Japan.
+[7].	 Natasha Gude, Teemu Koponen, Justin Pettit, Ben
+       Pfaﬀ, Martin Casadao, Nick McKeown, Scott Shenker,
+       “NOX: Towards an Operating System for Networks,”
+       In submission. Also:
+       http://nicira.com/docs/nox-nodis.pdf
+[8]  Global Environment for Network Innovations. Web site
+       http://geni.net.
+[9]  http://www.openflow.org/wk/index.php/OpenFlow_Tutorial
+[10] http://sbrc2010.inf.ufrgs.br/anais/data/pdf/wpeif/st02_05_wpeif.pdf
+[11] http://www.bladenetwork.net/userfiles/file/OpenFlow-WP.pdf
+[12] http://www.openflow.org/wk/index.php/OpenFlow_Tutorial
+[13] http://sbrc2010.inf.ufrgs.br/anais/data/pdf/wpeif/st02_05_wpeif.pdf
+[14] http://www.bladenetwork.net/userfiles/file/OpenFlow-WP.pdf
+[15] OpenFlow: Enabling Innovation in Campus Networks, Nick McKeown, Tom Anderson, Hari                                    Balakrishnan, Guru Parulkar, Larry Peterson, Jennifer Rexford, Scott Shenker, Jonathan Turner, CCR 2008
+[16]  NOX: Towards an Operating System for Networks, Natasha Gude, Teemu Koponen, Justin       Pettit, Ben Pfaff, Martìn Casado, Nick McKeown, Scott Shenker, CCR 2008
+[17] N. McKeown, T. Anderson, H. Balakrishnan, G. Parulkar, L. Peterson, J. Rexford, S. Shenker, and J. Turner. OpenFlow: Enabling Innovation in Campus Networks. SIGCOMM Comput.Commun. Rev., 38:69–74, March 2008.
+[18] N. Gude, T. Koponen, J. Pettit, B. Pfaff, M. Casado, N. McKeown, and S. Shenker. NOX: Towards an Operating System for Networks. SIGCOMM Comput. Commun. Rev., 38:105–110, July 2008
+[19]N. Foster, R. Harrison, M. J. Freedman, C. Monsanto, J. Rexford, A. Story, and D. Walker. Frenetic: A Network Programming Language. In ICFP, 2011.
+[20] S. Bishop, M. Fairbairn, M. Norrish, P. Sewell, M. Smith, and K. Wansbrough. Rigorous Speciﬁcation and Conformance Testing Techniques for Network Protocols, as applied to TCP, UDP, and Sockets. In SIGCOMM, 2005.
+[21] Open vSwitch: An Open Virtual Switch.  http://openvswitch.org
+[22] D. Erickson et al. A Demonstration of Virtual Machine Mobility in an OpenFlow Network, August 2008. SIGCOMM Demo
+
+
+
+ 
+TITLE OF APPENDIX A
+
+
